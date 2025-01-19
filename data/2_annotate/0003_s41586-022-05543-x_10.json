@@ -1,0 +1,82 @@
+{
+  "version": "5.5.0",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "body",
+      "points": [
+        [
+          181.78260869565202,
+          229.02173913043484
+        ],
+        [
+          1442.6521739130435,
+          3320.3260869565215
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "shape_type": "rectangle",
+      "flags": {},
+      "mask": null
+    },
+    {
+      "label": "heading",
+      "points": [
+        [
+          1481.782608695652,
+          259.4565217391305
+        ],
+        [
+          1868.7391304347825,
+          329.0217391304348
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "shape_type": "rectangle",
+      "flags": {},
+      "mask": null
+    },
+    {
+      "label": "body",
+      "points": [
+        [
+          1486.1304347826085,
+          333.36956521739137
+        ],
+        [
+          2733.95652173913,
+          1015.9782608695651
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "shape_type": "rectangle",
+      "flags": {},
+      "mask": null
+    },
+    {
+      "label": "references",
+      "points": [
+        [
+          390.478260869565,
+          1168.1521739130433
+        ],
+        [
+          725.2608695652175,
+          1115.978260869565
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "shape_type": "rectangle",
+      "flags": {},
+      "mask": null
+    }
+  ],
+  "imagePath": "..\\1_img\\0003_s41586-022-05543-x_10.jpg",
+  "imageData": null,
+  "imageHeight": 3845,
+  "imageWidth": 2894
+}
