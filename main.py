@@ -18,4 +18,5 @@ if mode_select == '2':
     vb.img_to_txt()
 if mode_select == '3':
     # convert text to audio and save various metadata
+    vb.txt_to_pod()
 

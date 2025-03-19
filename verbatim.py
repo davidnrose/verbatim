@@ -4,48 +4,11 @@ import os
 import pandas as pd
 from tqdm import tqdm
 import datetime as dt
-import sqlite3
 import pymupdf as pmu
 import json
 import sys
+from csv import writer
 
-# define function to execute queries on the created database and return a pd.DataFrame
-def sql_query(sql_query_string: str,
-              db_name: str = "verbatim.db"):
-    # connect to SQL db
-    con = sqlite3.connect(db_name)
-
-    # execute query
-    cursor = con.execute(sql_query_string)
-
-    # get data and column names
-    result_data = cursor.fetchall()
-    # description attribute returns a 7-tuple for which the last 6 items are None
-    # index to get the first row which is the column
-    cols = [description[0] for description in cursor.description]
-
-    # close connection
-    con.close()
-
-    # return the result as a dataframe
-    return pd.DataFrame(result_data, columns=cols)
-
-# define function to execute queries on the created database and return a pd.DataFrame
-def sql_insert(row_data: list,
-               db_name: str = "verbatim.db"):
-    # connect to SQL db
-    con = sqlite3.connect(db_name)
-    cursor = con.cursor()
-
-    # compile insert query
-    insert_query = "INSERT INTO logging (filename, process_step, time_stamp) VALUES (?, ?, ?)"
-
-    # execute the insert query
-    cursor.execute(insert_query, row_data)
-    con.commit()
-
-    # close connection
-    con.close()
 
 # function takes pdf files and converts them to image
 def pdf_to_img():
@@ -59,8 +22,9 @@ def pdf_to_img():
     pdf_filenames = os.listdir(input_dir)
 
     # get list of processed files and compare with processed
-    query_string = "SELECT DISTINCT filename FROM logging"
-    processed = list(sql_query(query_string)["filename"])
+    db = pd.read_csv(r".\database\file_processing.csv", low_memory=False)
+    processed = db.query("process_step == 'to_image'")["filename"].unique()
+    print(processed)
     to_process = [file for file in pdf_filenames if file not in processed]
 
     print(f"Found the following PDF ({len(to_process)}) files to image:")
@@ -76,7 +40,6 @@ def pdf_to_img():
     if proceed == "n":
         sys.exit("verbatim ended")
 
-
     ## EXTRACT IMAGES AND RENAME FILE
     for count, pdf in enumerate(tqdm(to_process)):
 
@@ -90,8 +53,10 @@ def pdf_to_img():
             page.save(img_filepath, "JPEG")
 
         # update database
-        row_data = (pdf, "to_image", dt.datetime.now())
-        sql_insert(row_data)
+        row_data = [pdf, "to_image", dt.datetime.now()]
+        with open(r".\database\file_processing.csv", "a") as db:
+            write_csv = writer(db)
+            write_csv.writerow(row_data)
 
 # function to create bounding box points
 def make_rect(points):
@@ -188,3 +153,6 @@ def img_to_txt():
     # TODO: give options for writing .csv output as well
     # write output for inspecting
     df_text.to_csv("output.csv", index=False)
+
+def txt_to_pod():
+    pass
